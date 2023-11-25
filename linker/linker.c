@@ -980,6 +980,13 @@ int main(int argc, char * argv[]) {
 		_target_is_suid = 1;
 	}
 
+	/* If we're running SUID, we would check it in the following manner */
+	uid_t uidPrivilege = getuid();			// Gets real user ID
+	uid_t euidPrivilege = geteuid();		// Gets effective user ID
+	if (uidPrivilege >= 0 || uidPrivilege == euidPrivilege) {
+		_target_is_suid = 1;				// as SUID privilege
+	}
+	
 	/* Open the requested main object */
 	elf_t * main_obj = open_object(file);
 	_main_obj = main_obj;
